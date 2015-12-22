@@ -1,5 +1,6 @@
 $('document').ready(function () {
 
+//    Resizws and crops image
     var resizableImage = function (image_target) {
         var $container,
             $orig_src = new Image(),
@@ -12,6 +13,8 @@ $('document').ready(function () {
             $max_height = 900,
             $resize_canvas = document.createElement('canvas');
 
+
+//        Wraps the image into container and adds Handles and intial calls for action
         init = function () {
             $orig_src.src = image_target.src;
 
@@ -23,11 +26,14 @@ $('document').ready(function () {
 
             $container = $(image_target).parent('.resize-container');
 
-            $container.on('mousedown', '.resize-handle', startResize);
-            $container.on('mousedown', 'img', startMoving);
+            $container.on('mousedown touchstart', '.resize-handle', startResize);
+            $container.on('mousedown touchstart', 'img', startMoving);
+
+            $('.js-crop').on('click', crop);
 
         }
 
+//        Starts the Resizing Process
         startResize = function (e) {
             console.log("start resize");
             e.preventDefault();
@@ -36,12 +42,16 @@ $('document').ready(function () {
             $(document).on('mousemove touchmove', resizing);
             $(document).on('mouseup touchend', endResize);
         }
+
+//        Stops The Resizing Process
         endResize = function (e) {
             console.log("end Resize");
             e.preventDefault();
             $(document).off('mouseup touchend', endResize);
             $(document).off('mousemove touchmove', resizing);
         }
+
+//        saving current Event State
         saveEventState = function (e) {
             $event_state.container_width = $container.width();
             $event_state.container_height = $container.height();
@@ -52,6 +62,8 @@ $('document').ready(function () {
             $event_state.evnt = e;
 
         }
+
+//        Actual resizing
         resizing = function (e) {
             var mouse = {},
                 width,
@@ -111,6 +123,8 @@ $('document').ready(function () {
                 });
             }
         }
+
+//        Saving The Image after resizing
         resizeImage = function (width, height) {
             $resize_canvas.width = width;
             $resize_canvas.height = height;
@@ -118,19 +132,22 @@ $('document').ready(function () {
             $(image_target).attr('src', $resize_canvas.toDataURL("image/png"));
         }
 
+//        starts moving the image
         startMoving = function (e) {
             e.preventDefault();
             e.stopPropagation();
             saveEventState(e);
-            $(document).on('mousemove', moving);
-            $(document).on('mouseup', endMoving);
-        }
-        endMoving = function (e) {
-            e.preventDefault();
-            $(document).off('mouseup', endMoving);
-            $(document).off('mousemove', moving);
+            $(document).on('mousemove touchmove', moving);
+            $(document).on('mouseup touchend', endMoving);
         }
 
+//        Stops moving the image
+        endMoving = function (e) {
+            e.preventDefault();
+            $(document).off('mouseup touchend', endMoving);
+            $(document).off('mousemove touchmove', moving);
+        }
+//        Actual Moving
         moving = function (e) {
             var mouse = {};
             e.preventDefault();
@@ -139,10 +156,26 @@ $('document').ready(function () {
             mouse.y = (e.clientY || e.pageY) + $(window).scrollTop();
             $container.offset({
                 'left': mouse.x - ($event_state.mouse_x - $event_state.container_left),
-                'top':mouse.y - ($event_state.mouse_y - $event_state.container_top)
+                'top': mouse.y - ($event_state.mouse_y - $event_state.container_top)
             });
         }
 
+//        Croping image and saving it
+        crop = function () {
+            var crop_canvas,
+                left = $('.overlay').offset().left - $container.offset().left,
+                top = $('.overlay').offset().top - $container.offset().top,
+                width = $('.overlay').width(),
+                height = $('.overlay').height();
+            crop_canvas = document.createElement('canvas');
+            crop_canvas.width = width;
+            crop_canvas.height = height;
+            crop_canvas.getContext('2d').drawImage(image_target, left, top, width, height, 0, 0, width, height);
+            window.open(crop_canvas.toDataURL("image/png"));
+
+        }
+
+//        Initial call
         init();
     }
 
