@@ -118,6 +118,30 @@ $('document').ready(function () {
             $(image_target).attr('src', $resize_canvas.toDataURL("image/png"));
         }
 
+        startMoving = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            saveEventState(e);
+            $(document).on('mousemove', moving);
+            $(document).on('mouseup', endMoving);
+        }
+        endMoving = function (e) {
+            e.preventDefault();
+            $(document).off('mouseup', endMoving);
+            $(document).off('mousemove', moving);
+        }
+
+        moving = function (e) {
+            var mouse = {};
+            e.preventDefault();
+            e.stopPropagation();
+            mouse.x = (e.clientX || e.pageX) + $(window).scrollLeft();
+            mouse.y = (e.clientY || e.pageY) + $(window).scrollTop();
+            $container.offset({
+                'left': mouse.x - ($event_state.mouse_x - $event_state.container_left),
+                'top':mouse.y - ($event_state.mouse_y - $event_state.container_top)
+            });
+        }
 
         init();
     }
