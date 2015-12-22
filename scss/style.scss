@@ -1,0 +1,53 @@
+.resize-container{
+    position: relative;
+    display: inline-block;
+    cursor: move;
+    margin: 0 auto;
+    img{
+        display: block;
+    }
+    :hover,:active{
+        img{
+            outline: 2px dashed rgba(222,60,80,0.9);
+        }
+    }
+}
+
+
+%extend_1{
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: rgba(222,60,80,0.9);
+    z-index: 999;
+}
+
+.resize-handle-nw{
+    @extend %extend_1;
+    top: -5px;
+    left: -5px;
+    cursor: nw-resize;
+}
+.resize-handle-sw{
+    @extend %extend_1;
+    bottom: -5px;
+    left: -5px;
+    cursor: sw-resize;
+}
+
+.resize-handle-ne{
+    @extend %extend_1;
+    top: -5px;
+    right: -5px;
+    cursor: ne-resize;
+}
+
+.resize-handle-se{
+    @extend %extend_1;
+    bottom: -5px;
+    right: -5px;
+    cursor: se-resize;
+}
+
+
