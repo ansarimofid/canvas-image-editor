@@ -1,123 +1,215 @@
-.resize-container{
-    position: relative;
-    display: inline-block;
-    cursor: move;
-    margin: 0 auto;
-    img{
-        display: block;
-    }
-    :hover,:active{
-        img{
-            outline: 2px dashed rgba(222,60,80,0.9);
+%vertical_align {
+    justify-content: center;
+    align-items: center;
+}
+
+$primary_color: rgb(244, 67, 54);
+.editor-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    .editor-container {
+        display: flex;
+        flex-direction: column;
+        .editor {
+            text-align: center;
+            display: block;
+            width: 500px;
+            height: 500px;
+            border: 2px solid $primary_color;
+            overflow: hidden;
+            background-image: url("../images/graphy-dark.png");
+            line-height: 500px;
+            position: relative;
+            .resize-container {
+                position: relative;
+                display: inline-flex;
+                cursor: move;
+                margin: 0 auto;
+                line-height: normal;
+                vertical-align: middle;
+                img {
+                    display: block;
+                }
+                &:hover,
+                &:active {
+                    img {
+                        outline: 2px dashed $primary_color;
+                    }
+                }
+            }
+        }
+        .upload {
+            display: flex;
+            //            height: 72px;
+            background-color: $primary_color;
+            color: white;
+            padding: 20px;
         }
     }
 }
 
+.upload {
+    form {
+        @extend %vertical_align;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        input {
+            display: none;
+        }
+        button {
+            border: 0;
+            padding: 10px 15px;
+            box-sizing: content-box;
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            color: $primary_color;
+            font-weight: bold;
+        }
+        label {
+            color: $primary_color;
+            background-color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin: 0;
+        }
+    }
+}
 
-%extend_1{
+%extend_1 {
     position: absolute;
     display: block;
     width: 10px;
     height: 10px;
-    background: rgba(222,60,80,0.9);
+    background: $primary_color;
     z-index: 999;
 }
 
-.resize-handle-nw{
+.resize-handle-nw {
     @extend %extend_1;
     top: -5px;
     left: -5px;
     cursor: nw-resize;
 }
-.resize-handle-sw{
+
+.resize-handle-sw {
     @extend %extend_1;
     bottom: -5px;
     left: -5px;
     cursor: sw-resize;
 }
 
-.resize-handle-ne{
+.resize-handle-ne {
     @extend %extend_1;
     top: -5px;
     right: -5px;
     cursor: ne-resize;
 }
 
-.resize-handle-se{
+.resize-handle-se {
     @extend %extend_1;
     bottom: -5px;
     right: -5px;
     cursor: se-resize;
 }
 
-.overlay{
+$overlay_height: 350px;
+$overlay_width: 350px;
+.overlay {
     position: absolute;
     left: 50%;
     top: 50%;
-    margin-left: -100px;
-    margin-top: -100px;
+    //    margin-left: -100px;
+    //    margin-top: -100px;
+    transform: translateX(-50%) translateY(-50%);
     z-index: 999;
-    width: 200px;
-    height: 200px;
-    border: solid 2px rgba(222,60,80,0.9);
+    width: $overlay_width;
+    height: $overlay_height;
+    border: solid 2px rgba(222, 60, 80, 0.9);
     box-sizing: content-box;
     pointer-events: none;
-    &:after,&:before{
+    vertical-align: middle;
+    display: inline-block;
+    &:after,
+    &:before {
         content: '';
         position: absolute;
         display: block;
-        width: 204px;
-        height: 40px;
-        border-left: dashed 2px rgba(222,60,80,0.9);
-        border-right: dashed 2px rgba(222,60,80,0.9);
+        width: $overlay_width+4px;
+        height: $overlay_height/5;
+        border-left: dashed 2px rgba(222, 60, 80, 0.9);
+        border-right: dashed 2px rgba(222, 60, 80, 0.9);
         box-sizing: border-box;
     }
-    &:before{
+    &:before {
         top: 0;
         margin-left: -2px;
         margin-top: -40px;
     }
-    &:after{
+    &:after {
         bottom: 0;
         margin-left: -2px;
         margin-bottom: -40px;
     }
 }
 
-.overlay-inner{
-    &:after,&:before{
+.overlay-inner {
+    &:after,
+    &:before {
         content: '';
         position: absolute;
         display: block;
-        width: 40px;
-        height: 204px;
-        border-top: dashed 2px rgba(222,60,80,0.9);
-        border-bottom: dashed 2px rgba(222,60,80,0.9);
+        width: $overlay_width/4;
+        height: $overlay_height + 4px;
+        border-top: dashed 2px rgba(222, 60, 80, 0.9);
+        border-bottom: dashed 2px rgba(222, 60, 80, 0.9);
         box-sizing: border-box;
     }
-    &:before{
+    &:before {
         left: 0;
         margin-left: -40px;
         margin-top: -2px;
     }
-    &:after{
+    &:after {
         right: 0;
         margin-right: -40px;
         margin-top: -2px;
     }
 }
 
-.btn-crop{
-    position: absolute;
-    vertical-align: bottom;
-    right: 50px;
-    bottom: 5px;
-    padding: 5px;
-    z-index: 999;
-    background-color: rgb(222,60,80);
-    border: none;
-    border-radius: 5px;
-    color: white;
+.edited-image-container {
+    min-width: 350px;
+    min-height: 350px;
+    border: 2px solid $primary_color;
+    display: flex;
+    @extend %vertical_align;
+    align-items: center;
+    justify-content: center;
 }
 
+.wrapper {
+    display: flex;
+    //    flex-direction: column;
+    @extend %vertical_align;
+    justify-content: space-around;
+    text-align: center;
+}
 
+.result-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    box-sizing: content-box;
+    @extend %vertical_align;
+    background-image: url('../images/always-grey.png')
+}
+
+.header {
+    color: white;
+    width: 100%;
+    background-color: $primary_color;
+    //    font-size: 32px;
+}

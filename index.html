@@ -2,29 +2,60 @@
 <html>
 
 <head>
-    <title>Css Test</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Canvas Image Editor</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
     <div class="wrapper">
-        <div class="main-container">
-            <div class="upload"></div>
-            <div class="editor">
-                <img class="resize-image" src="images/image.jpg" alt="">
-               <div class="overlay">
-                   <div class="overlay-inner"></div>
-               </div>
-               <div><button class="btn-crop js-crop">Crop</button></div>
 
+        <div class="editor-wrapper">
+            <div class="editor-container">
+                <div class="editor">
+                    <div class="resize-container">
+                        <span class="resize-handle resize-handle-nw"></span>
+                        <span class="resize-handle resize-handle-ne"></span>
+
+                        <img class="resize-image" src="" alt="">
+
+                        <span class="resize-handle resize-handle-se"></span>
+                        <span class="resize-handle resize-handle-sw"></span>
+
+
+                    </div>
+                    <div class="overlay">
+                        <div class="overlay-inner"></div>
+                    </div>
+                </div>
+                <div class="upload">
+                    <form action="#" method="POST" role="form">
+                        <input type="file" class="form-control" id="uploaded-img" placeholder="Input field">
+                        <label for="uploaded-img"> Upload Image</label>
+                        <div>
+                            <button class="btn form-control js-crop">Crop</button>
+                            <button type="submit" class="btn form-control">Submit</button>
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
         </div>
-    </div>
 
-    <script src="js/jquery-2.1.4.min.js"></script>
-    <script src="js/main.js"></script>
+        <div class="result-wrapper">
+            <div class="header">
+                <h1>Result</h1></div>
+
+            <div class="edited-image-container">
+                <img src="" alt="" class="edited-image">
+            </div>
+        </div>
+
+        <script src="js/jquery-2.1.4.min.js"></script>
+        <script src="js/main.js"></script>
 </body>
 
 </html>
-
