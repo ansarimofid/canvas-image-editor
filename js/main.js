@@ -1,56 +1,51 @@
 $('document').ready(function () {
 
-    //    Resizws and crops image
+    //    Resizes and crops image
     var resizableImage = function (image_target) {
         var $container,
             $orig_src = new Image(),
             image_target = $(image_target).get(0),
             $event_state = {},
             $constrain = false,
-            $min_width = 60,
-            $min_height = 60,
+            $min_width = 350,
+            $min_height = 350,
             $max_width = 800,
             $max_height = 900,
+            $intial_width = 450,
+            $intial_height = 450,
             $resize_canvas = document.createElement('canvas');
-
 
 
         //        Wraps the image into container and adds Handles and intial calls for action
         init = function () {
+
+                $orig_src.src = image_target.src;
+                initialResize();
+                $container = $(image_target).parent('.resize-container');
+                $container.on('mousedown touchstart', '.resize-handle', startResize);
+                $container.on('mousedown touchstart', 'img', startMoving);
+                $('.js-crop').on('click', crop);
+
+            }
+            //        Resizing Before Loading
+        initialResize = function () {
             var height, width;
-            $orig_src.src = image_target.src;
-
-
-            if (image_target.height > 600 && image_target.width > 600) {
-                height = 350;
+            if (image_target.height > $intial_height && image_target.width > $intial_width) {
+                height = $intial_height;
                 width = height * (image_target.width / image_target.height);
                 resizeImage(width, height);
                 console.log("height" + image_target.height);
-            } else if (image_target.height > 600) {
-                height = 350;
+            } else if (image_target.height > $intial_height) {
+                height = $intial_height;
                 width = height * (image_target.width / image_target.height);
                 resizeImage(width, height);
                 console.log("heightAA" + image_target.height);
             } else if (image_target.width > 600) {
-                width = 350;
+                width = 600;
                 height = width * (image_target.height / image_target.width);
                 resizeImage(width, height);
                 console.log("heightAA" + image_target.height);
             }
-
-            /*$(image_target).wrap('<div class="resize-container"></div>')
-                .before('<span class="resize-handle resize-handle-nw"></span>')
-                .before('<span class="resize-handle resize-handle-ne"></span>')
-                .after('<span class="resize-handle resize-handle-se"></span>')
-                .after('<span class="resize-handle resize-handle-sw"></span>');*/
-
-            $container = $(image_target).parent('.resize-container');
-
-            $container.on('mousedown touchstart', '.resize-handle', startResize);
-            $container.on('mousedown touchstart', 'img', startMoving);
-
-            $('.js-crop').on('click', crop);
-
         }
 
         //        Starts the Resizing Process
@@ -181,7 +176,8 @@ $('document').ready(function () {
         }
 
         //        Croping image and saving it
-        crop = function () {
+        crop = function (e) {
+            e.preventDefault();
             var crop_canvas,
                 left = $('.overlay').offset().left - $container.offset().left,
                 top = $('.overlay').offset().top - $container.offset().top,
@@ -191,85 +187,39 @@ $('document').ready(function () {
             crop_canvas.width = width;
             crop_canvas.height = height;
             crop_canvas.getContext('2d').drawImage(image_target, left, top, width, height, 0, 0, width, height);
-            //            window.open(crop_canvas.toDataURL("image/png"));
             $('.edited-image').attr('src', crop_canvas.toDataURL("image/png"));
-            //            $('.edited-image-container').append("<img class='edited-image' src='"+crop_canvas.toDataURL("image/png")+"' alt=''>")
         }
 
-        //        Initial call
-        /*image_target.onload = function () {
-            init();
-        }*/
-        //        init();
-        /*var c = 0;
-        if (!c) {
-            image_target.onload = function () {
-                init();
-            }
-            c++;
-            console.log("fromC");
-        }
-        else*/
-
-        /*if (image_target.height > 600 && image_target.width > 600) {
-            height = 350;
-            width = height * (image_target.width / image_target.height);
-            resizeImage(width, height);
-            console.log("height" + image_target.height);
-
-        }*/
-
+//        Initial call
         init();
-        $('body').on('change', '#uploaded-img', function () {
-            console.log("Should return");
-            return;
-        })
     }
 
+//    Loading Uploaded Image
     function loadUpladedImage($image) {
         if ($image.files && $image.files[0]) {
             $imageFile = new Image();
 
             $imageFile.onload = function () {
-                var $this = this,
-                    $image_canvas = document.createElement('canvas');
-
+                var $this = this;
                 var height, width;
-                /*if ($this.height > 600 && $this.width > 600) {
-                    height = 350;
-                    width = height * ($this.width / $this.height);
-                    $image_canvas.height = height;
-                    $image_canvas.width = width;
-                    console.log("Height:" + height + "Width:" + width);
-                    //                        $image_canvas.getContext('2d').drawImage($this.src, 0, 0, width, height);
-                }*/
-                //                    $('.resize-image').attr('src', $this.src);
+
+//                To check for Image of low resolution
+                if ($this.height < 350 || $this.width < 350) {
+                    alert("Image should be greater than 350px*350px");
+                    return;
+                }
                 $('.resize-image').attr('src', $this.src);
-                //                    $('.resize-image').attr('src', $resize_canvas.toDataURL("image/png"));
-                //                $(image_target).attr('src', $resize_canvas.toDataURL("image/png"));
-                //                break resizableImage;
                 resizableImage($('.resize-image'));
             }
             var reader = new FileReader();
-
-            /*reader.onload = function (e) {
-                console.log(e.target.result.height);
-                $('.resize-image').attr('src', e.target.result);
-            }*/
-            //            reader.readAsDataURL($image.files[0]);
             $imageFile.src = window.URL.createObjectURL($image.files[0]);
         }
     }
-    //    resizableImage($('.resize-image'));
-    /*$('#uploaded-img').change(function () {
-        loadUpladedImage(this);
-        resizableImage($('.resize-image'));
-    })*/
+
+//    Event Triggers on file upload
     $('body').on('change', '#uploaded-img', function () {
             loadUpladedImage(this);
             var $image = $('.resize-image');
-            //            resizableImage($('.resize-image'));
         })
-        //    resizableImage($('.resize-image'));
 
 });
