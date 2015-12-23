@@ -1,19 +1,69 @@
-.resize-container {
-  position: relative;
-  display: inline-block;
-  cursor: move;
-  margin: 0 auto; }
-  .resize-container img {
-    display: block; }
-  .resize-container :hover img, .resize-container :active img {
-    outline: 2px dashed rgba(222, 60, 80, 0.9); }
+.upload form, .edited-image-container, .wrapper, .result-wrapper {
+  justify-content: center;
+  align-items: center; }
+
+.editor-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px; }
+  .editor-wrapper .editor-container {
+    display: flex;
+    flex-direction: column; }
+    .editor-wrapper .editor-container .editor {
+      text-align: center;
+      display: block;
+      width: 500px;
+      height: 500px;
+      border: 2px solid #f44336;
+      overflow: hidden;
+      background-image: url("../images/graphy-dark.png");
+      line-height: 500px;
+      position: relative; }
+      .editor-wrapper .editor-container .editor .resize-container {
+        position: relative;
+        display: inline-flex;
+        cursor: move;
+        margin: 0 auto;
+        line-height: normal;
+        vertical-align: middle; }
+        .editor-wrapper .editor-container .editor .resize-container img {
+          display: block; }
+        .editor-wrapper .editor-container .editor .resize-container:hover img, .editor-wrapper .editor-container .editor .resize-container:active img {
+          outline: 2px dashed #f44336; }
+    .editor-wrapper .editor-container .upload {
+      display: flex;
+      background-color: #f44336;
+      color: white;
+      padding: 20px; }
+
+.upload form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; }
+  .upload form input {
+    display: none; }
+  .upload form button {
+    border: 0;
+    padding: 10px 15px;
+    box-sizing: content-box;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    color: #f44336;
+    font-weight: bold; }
+  .upload form label {
+    color: #f44336;
+    background-color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 0; }
 
 .resize-handle-nw, .resize-handle-sw, .resize-handle-ne, .resize-handle-se {
   position: absolute;
   display: block;
   width: 10px;
   height: 10px;
-  background: rgba(222, 60, 80, 0.9);
+  background: #f44336;
   z-index: 999; }
 
 .resize-handle-nw {
@@ -40,20 +90,21 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-left: -100px;
-  margin-top: -100px;
+  transform: translateX(-50%) translateY(-50%);
   z-index: 999;
-  width: 200px;
-  height: 200px;
+  width: 350px;
+  height: 350px;
   border: solid 2px rgba(222, 60, 80, 0.9);
   box-sizing: content-box;
-  pointer-events: none; }
+  pointer-events: none;
+  vertical-align: middle;
+  display: inline-block; }
   .overlay:after, .overlay:before {
     content: '';
     position: absolute;
     display: block;
-    width: 204px;
-    height: 40px;
+    width: 354px;
+    height: 70px;
     border-left: dashed 2px rgba(222, 60, 80, 0.9);
     border-right: dashed 2px rgba(222, 60, 80, 0.9);
     box-sizing: border-box; }
@@ -70,8 +121,8 @@
   content: '';
   position: absolute;
   display: block;
-  width: 40px;
-  height: 204px;
+  width: 87.5px;
+  height: 354px;
   border-top: dashed 2px rgba(222, 60, 80, 0.9);
   border-bottom: dashed 2px rgba(222, 60, 80, 0.9);
   box-sizing: border-box; }
@@ -84,16 +135,30 @@
   margin-right: -40px;
   margin-top: -2px; }
 
-.btn-crop {
-  position: absolute;
-  vertical-align: bottom;
-  right: 50px;
-  bottom: 5px;
-  padding: 5px;
-  z-index: 999;
-  background-color: #de3c50;
-  border: none;
-  border-radius: 5px;
-  color: white; }
+.edited-image-container {
+  min-width: 350px;
+  min-height: 350px;
+  border: 2px solid #f44336;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  text-align: center; }
+
+.result-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  box-sizing: content-box;
+  background-image: url("../images/always-grey.png"); }
+
+.header {
+  color: white;
+  width: 100%;
+  background-color: #f44336; }
 
 /*# sourceMappingURL=style.css.map */
