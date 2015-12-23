@@ -1,6 +1,6 @@
 $('document').ready(function () {
 
-//    Resizws and crops image
+    //    Resizws and crops image
     var resizableImage = function (image_target) {
         var $container,
             $orig_src = new Image(),
@@ -14,15 +14,35 @@ $('document').ready(function () {
             $resize_canvas = document.createElement('canvas');
 
 
-//        Wraps the image into container and adds Handles and intial calls for action
+
+        //        Wraps the image into container and adds Handles and intial calls for action
         init = function () {
+            var height, width;
             $orig_src.src = image_target.src;
 
-            $(image_target).wrap('<div class="resize-container"></div>')
+
+            if (image_target.height > 600 && image_target.width > 600) {
+                height = 350;
+                width = height * (image_target.width / image_target.height);
+                resizeImage(width, height);
+                console.log("height" + image_target.height);
+            } else if (image_target.height > 600) {
+                height = 350;
+                width = height * (image_target.width / image_target.height);
+                resizeImage(width, height);
+                console.log("heightAA" + image_target.height);
+            } else if (image_target.width > 600) {
+                width = 350;
+                height = width * (image_target.height / image_target.width);
+                resizeImage(width, height);
+                console.log("heightAA" + image_target.height);
+            }
+
+            /*$(image_target).wrap('<div class="resize-container"></div>')
                 .before('<span class="resize-handle resize-handle-nw"></span>')
                 .before('<span class="resize-handle resize-handle-ne"></span>')
                 .after('<span class="resize-handle resize-handle-se"></span>')
-                .after('<span class="resize-handle resize-handle-sw"></span>');
+                .after('<span class="resize-handle resize-handle-sw"></span>');*/
 
             $container = $(image_target).parent('.resize-container');
 
@@ -33,7 +53,7 @@ $('document').ready(function () {
 
         }
 
-//        Starts the Resizing Process
+        //        Starts the Resizing Process
         startResize = function (e) {
             console.log("start resize");
             e.preventDefault();
@@ -43,7 +63,7 @@ $('document').ready(function () {
             $(document).on('mouseup touchend', endResize);
         }
 
-//        Stops The Resizing Process
+        //        Stops The Resizing Process
         endResize = function (e) {
             console.log("end Resize");
             e.preventDefault();
@@ -51,7 +71,7 @@ $('document').ready(function () {
             $(document).off('mousemove touchmove', resizing);
         }
 
-//        saving current Event State
+        //        saving current Event State
         saveEventState = function (e) {
             $event_state.container_width = $container.width();
             $event_state.container_height = $container.height();
@@ -63,7 +83,7 @@ $('document').ready(function () {
 
         }
 
-//        Actual resizing
+        //        Actual resizing
         resizing = function (e) {
             var mouse = {},
                 width,
@@ -124,7 +144,7 @@ $('document').ready(function () {
             }
         }
 
-//        Saving The Image after resizing
+        //        Saving The Image after resizing
         resizeImage = function (width, height) {
             $resize_canvas.width = width;
             $resize_canvas.height = height;
@@ -132,7 +152,7 @@ $('document').ready(function () {
             $(image_target).attr('src', $resize_canvas.toDataURL("image/png"));
         }
 
-//        starts moving the image
+        //        starts moving the image
         startMoving = function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -141,13 +161,13 @@ $('document').ready(function () {
             $(document).on('mouseup touchend', endMoving);
         }
 
-//        Stops moving the image
+        //        Stops moving the image
         endMoving = function (e) {
-            e.preventDefault();
-            $(document).off('mouseup touchend', endMoving);
-            $(document).off('mousemove touchmove', moving);
-        }
-//        Actual Moving
+                e.preventDefault();
+                $(document).off('mouseup touchend', endMoving);
+                $(document).off('mousemove touchmove', moving);
+            }
+            //        Actual Moving
         moving = function (e) {
             var mouse = {};
             e.preventDefault();
@@ -160,7 +180,7 @@ $('document').ready(function () {
             });
         }
 
-//        Croping image and saving it
+        //        Croping image and saving it
         crop = function () {
             var crop_canvas,
                 left = $('.overlay').offset().left - $container.offset().left,
@@ -171,13 +191,85 @@ $('document').ready(function () {
             crop_canvas.width = width;
             crop_canvas.height = height;
             crop_canvas.getContext('2d').drawImage(image_target, left, top, width, height, 0, 0, width, height);
-            window.open(crop_canvas.toDataURL("image/png"));
-
+            //            window.open(crop_canvas.toDataURL("image/png"));
+            $('.edited-image').attr('src', crop_canvas.toDataURL("image/png"));
+            //            $('.edited-image-container').append("<img class='edited-image' src='"+crop_canvas.toDataURL("image/png")+"' alt=''>")
         }
 
-//        Initial call
+        //        Initial call
+        /*image_target.onload = function () {
+            init();
+        }*/
+        //        init();
+        /*var c = 0;
+        if (!c) {
+            image_target.onload = function () {
+                init();
+            }
+            c++;
+            console.log("fromC");
+        }
+        else*/
+
+        /*if (image_target.height > 600 && image_target.width > 600) {
+            height = 350;
+            width = height * (image_target.width / image_target.height);
+            resizeImage(width, height);
+            console.log("height" + image_target.height);
+
+        }*/
+
         init();
+        $('body').on('change', '#uploaded-img', function () {
+            console.log("Should return");
+            return;
+        })
     }
 
-    resizableImage($('.resize-image'));
+    function loadUpladedImage($image) {
+        if ($image.files && $image.files[0]) {
+            $imageFile = new Image();
+
+            $imageFile.onload = function () {
+                var $this = this,
+                    $image_canvas = document.createElement('canvas');
+
+                var height, width;
+                /*if ($this.height > 600 && $this.width > 600) {
+                    height = 350;
+                    width = height * ($this.width / $this.height);
+                    $image_canvas.height = height;
+                    $image_canvas.width = width;
+                    console.log("Height:" + height + "Width:" + width);
+                    //                        $image_canvas.getContext('2d').drawImage($this.src, 0, 0, width, height);
+                }*/
+                //                    $('.resize-image').attr('src', $this.src);
+                $('.resize-image').attr('src', $this.src);
+                //                    $('.resize-image').attr('src', $resize_canvas.toDataURL("image/png"));
+                //                $(image_target).attr('src', $resize_canvas.toDataURL("image/png"));
+                //                break resizableImage;
+                resizableImage($('.resize-image'));
+            }
+            var reader = new FileReader();
+
+            /*reader.onload = function (e) {
+                console.log(e.target.result.height);
+                $('.resize-image').attr('src', e.target.result);
+            }*/
+            //            reader.readAsDataURL($image.files[0]);
+            $imageFile.src = window.URL.createObjectURL($image.files[0]);
+        }
+    }
+    //    resizableImage($('.resize-image'));
+    /*$('#uploaded-img').change(function () {
+        loadUpladedImage(this);
+        resizableImage($('.resize-image'));
+    })*/
+    $('body').on('change', '#uploaded-img', function () {
+            loadUpladedImage(this);
+            var $image = $('.resize-image');
+            //            resizableImage($('.resize-image'));
+        })
+        //    resizableImage($('.resize-image'));
+
 });
