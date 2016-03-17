@@ -9,10 +9,10 @@
 </head>
 
 <body>
+    <!-- Main Wrapper -->
     <div class="wrapper">
-
-    <!-- Open Modal Button -->
-    <div class="change-icon"><a href="#" data-toggle='modal' data-target='#image-editor'><i class="fa fa-crop"></i></i></a></div>
+        <!-- Open Modal Button -->
+        <div class="change-icon"><a href="#" data-toggle='modal' data-target='#image-editor'><span class="change-icon-text">Open Editor</span><span class="icon-container"><i class="fa fa-picture-o"></i><i class="fa fa-crop"></i><i class="fa fa-download"></i></span></a></div>
         <!--    Editor Modal-->
         <div id="image-editor" class="modal fade editor-modal" role="dialog">
             <div class="modal-dialog">
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="edit-button">
                                     <button class="btn form-control preview-crop">Preview</button>
-                                    <button type="submit" class="js-crop btn form-control" data-dismiss="modal">Submit</button>
+                                    <button type="submit" class="js-crop btn form-control" data-dismiss="modal">Download</button>
                                 </div>
                             </form>
                         </div>
@@ -62,9 +62,11 @@
                 </div>
             </div>
         </div>
-        <script src="js/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
+    </div>
+    <!-- Scripts -->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

@@ -4,6 +4,17 @@
 }
 
 $primary_color: rgb(244, 67, 54);
+
+html,body{
+    height: 100%;
+    width: 100%;
+    .wrapper{
+        display: flex;
+        @extend %vertical_align;
+        height: 100%;
+    }
+}
+
 .editor-wrapper {
   display: flex;
   justify-content: center;
@@ -288,4 +299,33 @@ $overlay_width: 350px;
 {
   outline: transparent;
   background-color: whitesmoke;
+}
+
+.change-icon{
+    a{
+        &:hover{
+            opacity: 0.90;
+        }
+       display: flex;
+       flex-direction:column-reverse;
+        text-decoration: none;
+
+        border-radius: 5px;
+        .change-icon-text{
+            padding: 17px 30px;
+            background-color: $primary_color;
+            color: white;       
+            border-radius: 0 0 10px 10px;
+
+        }
+        .icon-container{
+            display: flex;
+            justify-content: space-around;
+            border: 3px solid $primary_color;
+            padding: 20px 20px;
+            color:$primary_color;
+            background-color: white;
+            border-radius: 10px 10px 0 0;
+        }
+    }
 }
