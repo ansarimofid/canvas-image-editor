@@ -265,6 +265,23 @@ $('document').ready(function () {
         }
     }
 
+    //  Preview the Edited Image;
+    $('.preview-crop').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var $this = $(this);
+
+            if (!$this.hasClass('preview')) {
+                $this.addClass('preview');
+                $this.text("Cancel Preview");
+                $('.overlay-preview').fadeIn(100);
+            } else {
+                $this.removeClass('preview');
+                $this.text("Preview");
+                $('.overlay-preview').fadeOut(50);
+
+            }
+        });
         //    Event Triggers on file upload
     $('body').on('change', '#uploaded-img', function () {
         var $this = this;
