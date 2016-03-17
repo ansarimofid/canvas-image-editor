@@ -1,12 +1,12 @@
 $('document').ready(function () {
 
     //    Resizes and crops image
-    var resizableImage = function (image_target) {
+    var resizableImage = function (image_target_init) {
         var $container,
             $orig_src = new Image(),
-            image_target = $(image_target).get(0),
+            image_target = $(image_target_init).get(0),
             $event_state = {},
-            $constrain = false,
+            $constrain = true,
             $min_width = 350,
             $min_height = 350,
             $max_width = 1200,
@@ -19,15 +19,18 @@ $('document').ready(function () {
         //        Wraps the image into container and adds Handles and intial calls for action
         init = function () {
 
-                $orig_src.src = image_target.src;
-                initialResize();
-                $container = $(image_target).parent('.resize-container');
+            $orig_src.src = image_target.src;
+            initialResize();
+
+            $container = $(image_target).parent('.resize-container');
+            if (!$container.hasClass("resizing-the-image")) {
+                $container.addClass("resizing-the-image");
                 $container.on('mousedown touchstart', '.resize-handle', startResize);
                 $container.on('mousedown touchstart', 'img', startMoving);
                 $('.js-crop').on('click', crop);
-
             }
-            //        Resizing Before Loading
+        };
+        //        Resizing Before Loading
         initialResize = function () {
             var height, width;
             if (image_target.height > $intial_height && image_target.width > $intial_width) {
@@ -55,7 +58,7 @@ $('document').ready(function () {
                 }
                 resizeImage(width, height);
             }
-        }
+        };
 
         //        Starts the Resizing Process
         startResize = function (e) {
@@ -65,7 +68,7 @@ $('document').ready(function () {
             saveEventState(e);
             $(document).on('mousemove touchmove', resizing);
             $(document).on('mouseup touchend', endResize);
-        }
+        };
 
         //        Stops The Resizing Process
         endResize = function (e) {
@@ -73,7 +76,7 @@ $('document').ready(function () {
             e.preventDefault();
             $(document).off('mouseup touchend', endResize);
             $(document).off('mousemove touchmove', resizing);
-        }
+        };
 
         //        saving current Event State
         saveEventState = function (e) {
@@ -85,7 +88,7 @@ $('document').ready(function () {
             $event_state.mouse_y = (e.clientY || e.pageY || e.originalEvent.touches[0].clientY) + $(window).scrollTop();
             $event_state.evnt = e;
 
-        }
+        };
 
         //        Actual resizing
         resizing = function (e) {
@@ -146,7 +149,7 @@ $('document').ready(function () {
                     'top': top
                 });
             }
-        }
+        };
 
         //        Saving The Image after resizing
         resizeImage = function (width, height) {
@@ -154,7 +157,7 @@ $('document').ready(function () {
             $resize_canvas.height = height;
             $resize_canvas.getContext('2d').drawImage($orig_src, 0, 0, width, height);
             $(image_target).attr('src', $resize_canvas.toDataURL("image/png"));
-        }
+        };
 
         //        starts moving the image
         startMoving = function (e) {
@@ -163,14 +166,15 @@ $('document').ready(function () {
             saveEventState(e);
             $(document).on('mousemove touchmove', moving);
             $(document).on('mouseup touchend', endMoving);
-        }
+            console.log("Move");
+        };
 
         //        Stops moving the image
         endMoving = function (e) {
                 e.preventDefault();
                 $(document).off('mouseup touchend', endMoving);
                 $(document).off('mousemove touchmove', moving);
-            }
+            };
             //        Actual Moving
         moving = function (e) {
             var mouse = {};
@@ -182,7 +186,7 @@ $('document').ready(function () {
                 'left': mouse.x - ($event_state.mouse_x - $event_state.container_left),
                 'top': mouse.y - ($event_state.mouse_y - $event_state.container_top)
             });
-        }
+        };
 
         //        Croping image and saving it
         crop = function (e) {
@@ -196,15 +200,33 @@ $('document').ready(function () {
             crop_canvas.width = width;
             crop_canvas.height = height;
             crop_canvas.getContext('2d').drawImage(image_target, left, top, width, height, 0, 0, width, height);
-            $('.edited-image').attr('src', crop_canvas.toDataURL("image/png"));
+            // $('.pic img').attr('src', crop_canvas.toDataURL("image/png"));
+             $('.edited-image').attr('src', crop_canvas.toDataURL("image/png"));
+            // postImage();
+        };
+
+        //    Optional:posts the cropped image to the server
+       /* 
+       function postImage() {
+            var $img = $('.pic img').attr('src');
+            console.log("Before:" + $img.length);
+            $.post('API/upload_pic.php', {
+                'img': $img
+            }, function (data) {
+                console.log("After:" + data);
+                $('.overlay-preview').fadeOut(50);
+            });
         }
+        */
 
         //        Initial call
         init();
-    }
+    };
+
 
     //    Loading Uploaded Image
-    function loadUpladedImage($image) {
+    function loaduploadedImage($image) {
+
         if ($image.files && $image.files[0]) {
             $imageFile = new Image();
 
@@ -219,16 +241,36 @@ $('document').ready(function () {
                 }
                 $('.resize-image').attr('src', $this.src);
                 resizableImage($('.resize-image'));
-            }
+
+            };
             var reader = new FileReader();
             $imageFile.src = window.URL.createObjectURL($image.files[0]);
         }
     }
 
-    //    Event Triggers on file upload
+    //    Validation For Image
+
+    function isImage(file) {
+        var name, extension, $file = $(file);
+        if (file.files) {
+            name = $file.val().toLowerCase();
+            extension = name.substring(name.lastIndexOf('.'));
+
+            if (['.png', '.jpeg', '.gif', '.jpg', '.bmp'].indexOf(extension) >= 0) {
+                console.log("Valid image file");
+                return 1;
+            }
+            alert("Not a Valid Image file");
+            return 0;
+        }
+    }
+
+        //    Event Triggers on file upload
     $('body').on('change', '#uploaded-img', function () {
-        loadUpladedImage(this);
-        var $image = $('.resize-image');
-    })
+        var $this = this;
+        if (isImage($this)) {
+            loaduploadedImage($this);
+        }
+    });
 
 });
