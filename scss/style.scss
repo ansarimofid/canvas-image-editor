@@ -74,6 +74,9 @@ $primary_color: rgb(244, 67, 54);
             padding: 10px 15px;
             cursor: pointer;
             margin: 0;
+            &:hover{
+                color: #333;
+            }
         }
     }
 }

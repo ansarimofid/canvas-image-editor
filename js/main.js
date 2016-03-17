@@ -9,8 +9,8 @@ $('document').ready(function () {
             $constrain = false,
             $min_width = 350,
             $min_height = 350,
-            $max_width = 800,
-            $max_height = 900,
+            $max_width = 1200,
+            $max_height = 1200,
             $intial_width = 450,
             $intial_height = 450,
             $resize_canvas = document.createElement('canvas');
@@ -33,18 +33,27 @@ $('document').ready(function () {
             if (image_target.height > $intial_height && image_target.width > $intial_width) {
                 height = $intial_height;
                 width = height * (image_target.width / image_target.height);
+                if (width < $min_width) {
+                    width = $intial_width;
+                    height = width * (image_target.height / image_target.width);
+                }
                 resizeImage(width, height);
-                console.log("height" + image_target.height);
             } else if (image_target.height > $intial_height) {
                 height = $intial_height;
                 width = height * (image_target.width / image_target.height);
+                if (width < $min_width) {
+                    width = $intial_width;
+                    height = width * (image_target.height / image_target.width);
+                }
                 resizeImage(width, height);
-                console.log("heightAA" + image_target.height);
-            } else if (image_target.width > 600) {
-                width = 600;
+            } else if (image_target.width > $intial_width) {
+                width = $intial_width;
                 height = width * (image_target.height / image_target.width);
+                if (height < $min_height) {
+                    height = $intial_height;
+                    width = height * (image_target.width / image_target.height);
+                }
                 resizeImage(width, height);
-                console.log("heightAA" + image_target.height);
             }
         }
 
@@ -190,11 +199,11 @@ $('document').ready(function () {
             $('.edited-image').attr('src', crop_canvas.toDataURL("image/png"));
         }
 
-//        Initial call
+        //        Initial call
         init();
     }
 
-//    Loading Uploaded Image
+    //    Loading Uploaded Image
     function loadUpladedImage($image) {
         if ($image.files && $image.files[0]) {
             $imageFile = new Image();
@@ -203,7 +212,7 @@ $('document').ready(function () {
                 var $this = this;
                 var height, width;
 
-//                To check for Image of low resolution
+                //                To check for Image of low resolution
                 if ($this.height < 350 || $this.width < 350) {
                     alert("Image should be greater than 350px*350px");
                     return;
@@ -216,10 +225,10 @@ $('document').ready(function () {
         }
     }
 
-//    Event Triggers on file upload
+    //    Event Triggers on file upload
     $('body').on('change', '#uploaded-img', function () {
-            loadUpladedImage(this);
-            var $image = $('.resize-image');
-        })
+        loadUpladedImage(this);
+        var $image = $('.resize-image');
+    })
 
 });
