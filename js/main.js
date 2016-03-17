@@ -200,14 +200,13 @@ $('document').ready(function () {
             crop_canvas.width = width;
             crop_canvas.height = height;
             crop_canvas.getContext('2d').drawImage(image_target, left, top, width, height, 0, 0, width, height);
-            // $('.pic img').attr('src', crop_canvas.toDataURL("image/png"));
-             $('.edited-image').attr('src', crop_canvas.toDataURL("image/png"));
+            $('.editor-modal').removeClass('editing-Image');
+            window.open(crop_canvas.toDataURL("image/png"));
             // postImage();
         };
 
-        //    Optional:posts the cropped image to the server
-       /* 
-       function postImage() {
+        //    optional:posts the cropped image to server
+       /* function postImage() {
             var $img = $('.pic img').attr('src');
             console.log("Before:" + $img.length);
             $.post('API/upload_pic.php', {
@@ -215,9 +214,8 @@ $('document').ready(function () {
             }, function (data) {
                 console.log("After:" + data);
                 $('.overlay-preview').fadeOut(50);
-            });
-        }
-        */
+            })
+        }*/
 
         //        Initial call
         init();
@@ -239,6 +237,7 @@ $('document').ready(function () {
                     alert("Image should be greater than 350px*350px");
                     return;
                 }
+                $('.editor-modal').addClass('editing-Image');
                 $('.resize-image').attr('src', $this.src);
                 resizableImage($('.resize-image'));
 

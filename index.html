@@ -6,55 +6,64 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/font-awesome.css">
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
     <div class="wrapper">
 
-        <div class="editor-wrapper">
-            <div class="editor-container">
-                <div class="editor">
-                    <div class="resize-container">
-                        <span class="resize-handle resize-handle-nw"></span>
-                        <span class="resize-handle resize-handle-ne"></span>
-
-                        <img class="resize-image" src="" alt="">
-
-                        <span class="resize-handle resize-handle-se"></span>
-                        <span class="resize-handle resize-handle-sw"></span>
-
-
+    <!-- Open Modal Button -->
+    <div class="change-icon"><a href="#" data-toggle='modal' data-target='#image-editor'><i class="fa fa-crop"></i></i></a></div>
+        <!--    Editor Modal-->
+        <div id="image-editor" class="modal fade editor-modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">Edit Your Image</h2>
                     </div>
-                    <div class="overlay">
-                        <div class="overlay-inner"></div>
-                    </div>
-                </div>
-                <div class="upload">
-                    <form action="#" method="POST" role="form">
-                        <input type="file" class="form-control" id="uploaded-img" placeholder="Input field">
-                        <label for="uploaded-img"> Upload Image</label>
-                        <div>
-                            <button class="btn form-control js-crop">Crop</button>
-                            <button type="submit" class="btn form-control">Submit</button>
+                    <div class="modal-body">
+                        <div class="editor-wrapper">
+                            <div class="editor-container">
+                                <div class="editor">
+                                    <div class="resize-container">
+                                        <span class="resize-handle resize-handle-nw"></span>
+                                        <span class="resize-handle resize-handle-ne"></span>
+                                        <img class="resize-image" src="" alt="">
+                                        <span class="resize-handle resize-handle-se"></span>
+                                        <span class="resize-handle resize-handle-sw"></span>
+                                    </div>
+                                    <div class="overlay">
+                                        <div class="overlay-inner"></div>
+                                    </div>
+                                    <div class="overlay overlay-preview">
+                                        <div class="overlay-inner"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                    </form>
-
+                    </div>
+                    <div class="modal-footer">
+                        <div class="upload">
+                            <form action="#" method="POST" role="form">
+                                <input type="file" acccept="images/" class="form-control" id="uploaded-img" placeholder="Input field" accept="image/*">
+                                <div class="upload-button">
+                                    <label for="uploaded-img">
+                                        <span class="label-text">Choose an Image</span><span class="upload-icon"><i class="fa fa-upload"></i></span>
+                                    </label>
+                                </div>
+                                <div class="edit-button">
+                                    <button class="btn form-control preview-crop">Preview</button>
+                                    <button type="submit" class="js-crop btn form-control" data-dismiss="modal">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="result-wrapper">
-            <div class="header">
-                <h1>Result</h1></div>
-
-            <div class="edited-image-container">
-                <img src="" alt="" class="edited-image">
-            </div>
-        </div>
-
         <script src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script src="js/main.js"></script>
 </body>
 
